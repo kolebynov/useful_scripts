@@ -1,19 +1,29 @@
-Import-Module $PSScriptRoot\AddTimeGfLogs.ps1
-
 #============================================================================
 # Extract all SharePoint logs or only logs from specified SharePoint task from DocGen logs
 #============================================================================
 function Extract-Sp-Logs() {
     [cmdletbinding()]
     param (
-        [parameter(Mandatory=$true)]
-        [string[]] $Path,
-        [string] $TaskId
+        [string[]] $Path = @(),
+        [string] $TaskId,
+        [parameter(ValueFromPipeline)]
+        [string[]] $InputObject
     )
-    [string]$pattern = "(SPG\.\w)|(^@@)"
-    if ($TaskId -ne $null) {
-        $pattern = "$pattern|(:$TaskId\])"
+    begin {
+        [string]$pattern = "(\[SPG\.\w)|(^@@)"
+        if (![string]::IsNullOrEmpty($TaskId)) {
+            write "task id not null $TaskId"
+            $pattern = "(\[SPG\.\w\])|(^@@)|(:$TaskId\])"
+        }
     }
+    process {
+        if ($InputObject -eq $null) {
+            $selectRes = sls -Path $Path -Pattern $pattern
+        }
+        else {
+            $selectRes = sls -Pattern $pattern -InputObject $InputObject
+        }
 
-    sls -Path $Path -Pattern $pattern | select -ExpandProperty Line | Add-Time-Gf-Logs
+        $selectRes | select -ExpandProperty Line
+    }
 }

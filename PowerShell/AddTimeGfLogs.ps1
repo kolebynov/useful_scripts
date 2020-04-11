@@ -1,7 +1,7 @@
 #============================================================================
 # Add full time to GF log lines
 #============================================================================
-function Add-Time-Gf-Logs() {
+function Add-TimeGfLogs() {
     [cmdletbinding()]
     param (
         [parameter(ValueFromPipeline)]

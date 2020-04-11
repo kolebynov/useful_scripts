@@ -1,7 +1,7 @@
 #============================================================================
 # Extract all SharePoint logs or only logs from specified SharePoint task from DocGen logs
 #============================================================================
-function Extract-Sp-Logs() {
+function Get-SpLogs() {
     [cmdletbinding()]
     param (
         [string[]] $Path = @(),

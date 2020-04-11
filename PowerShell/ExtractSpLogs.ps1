@@ -12,18 +12,17 @@ function Extract-Sp-Logs() {
     begin {
         [string]$pattern = "(\[SPG\.\w)|(^@@)"
         if (![string]::IsNullOrEmpty($TaskId)) {
-            write "task id not null $TaskId"
             $pattern = "(\[SPG\.\w\])|(^@@)|(:$TaskId\])"
         }
     }
     process {
-        if ($InputObject -eq $null) {
-            $selectRes = sls -Path $Path -Pattern $pattern
+        if ($null -eq $InputObject) {
+            $selectRes = Select-String -Path $Path -Pattern $pattern
         }
         else {
-            $selectRes = sls -Pattern $pattern -InputObject $InputObject
+            $selectRes = Select-String -Pattern $pattern -InputObject $InputObject
         }
 
-        $selectRes | select -ExpandProperty Line
+        $selectRes | Select-Object -ExpandProperty Line
     }
 }

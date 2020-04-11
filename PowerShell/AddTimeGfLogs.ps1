@@ -21,7 +21,7 @@ function Add-Time-Gf-Logs() {
             $currentTime = $currentTime.AddHours([double]::Parse($timeParts[1]))
         }
 
-        if ($currentTime -ne $null -and $logLineRegex.IsMatch($currentLine)) {
+        if ($null -ne $currentTime -and $logLineRegex.IsMatch($currentLine)) {
             "$($currentTime.ToString("dd/MM/yyyy_HH", [cultureinfo]::InvariantCulture))_$_"
         }
         else {

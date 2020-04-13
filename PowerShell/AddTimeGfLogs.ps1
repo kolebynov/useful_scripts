@@ -17,7 +17,7 @@ function Add-TimeGfLogs() {
 
         if ($currentLine.StartsWith("@@")) {
             $timeParts = $currentLine.Remove(0, 2).Split('_')
-            $currentTime = [System.DateTimeOffset]::Parse($timeParts[0], [cultureinfo]::InvariantCulture)
+            $currentTime = [System.DateTimeOffset]::Parse($timeParts[0])
             $currentTime = $currentTime.AddHours([double]::Parse($timeParts[1]))
         }
 

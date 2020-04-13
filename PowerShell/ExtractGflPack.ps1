@@ -15,16 +15,20 @@ function Extract-GflPack() {
         [string] $GfinFileViewerPath = $GfinFileViewerDefaultPath
     )
 
+    $startTime = [datetime]::Now
+
     if (!(Test-Path $Path)) {
         throw "Gflpack file $Path does not exist"
     }
 
     Write-Verbose "Starting to extract gflpack $Path to $Destination"
 
-    & $GfinFileViewerPath $Path $Destination -unpack
+    & $GfinFileViewerPath $Path $Destination -unpack | Write-Verbose
 
-    if (Test-Path "$Destination\GFINFileViewer Return Code.txt") {
-        throw (Get-Content "$Destination\GFINFileViewer Return Code.txt" -Encoding Unicode)
+    $extractResult = Get-Content "$Destination\GFINFileViewer Return Code.txt" -Encoding Unicode
+
+    if (!$extractResult.Equals("Gfunpack operation has completed.")) {
+        throw $extractResult
     }
 
     Write-Verbose "Extracting of gflpack is finished"

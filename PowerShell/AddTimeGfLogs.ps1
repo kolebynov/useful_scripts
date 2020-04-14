@@ -6,7 +6,8 @@ function Add-TimeGfLogs() {
     param (
         [parameter(ValueFromPipeline)]
         [string[]] $Lines,
-        [Nullable[System.DateTimeOffset]] $StartTime
+        [Nullable[System.DateTimeOffset]] $StartTime,
+        [string] $Format = "yyyy.MM.dd HH:mm:ss.fff"
     )
     begin {
         [Nullable[System.DateTimeOffset]] $currentTime = $StartTime
@@ -22,7 +23,10 @@ function Add-TimeGfLogs() {
         }
 
         if ($null -ne $currentTime -and $logLineRegex.IsMatch($currentLine)) {
-            "$($currentTime.ToString("dd/MM/yyyy_HH", [cultureinfo]::InvariantCulture))_$_"
+            $lineMinutes = $currentLine.Substring(0, 2)
+            $lineSeconds = $currentLine.Substring(2, 6)
+            $lineTime = $currentTime.Add([timespan]::Parse("00:$lineMinutes`:$lineSeconds"))
+            "$($lineTime.ToString($Format)) $($currentLine.Remove(0, 8))"
         }
         else {
             $_

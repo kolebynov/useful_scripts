@@ -6,7 +6,7 @@
 function Extract-GflPack() {
     [cmdletbinding()]
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline)]
         [string] $Path,
 
         [Parameter(Mandatory)]

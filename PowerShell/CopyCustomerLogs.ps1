@@ -13,13 +13,14 @@ function Copy-CustomerLogs() {
         [Parameter(Mandatory)]
         [string] $CaseNumber,
 
-        [Parameter(Mandatory)]
-        [string] $Destination,
+        [string] $Destination = ".",
 
         [string] $CustomerIndexPath = $CustomerIndexDefaultPath
     )
 
     $caseFolderPath = Get-CustomerLogsFolder $CustomerAccount $CaseNumber $CustomerIndexPath
+
+    Write-Host "Copying $($(Get-ChildItem $caseFolderPath -Recurse | Measure-Object Length -Sum).Sum / 1KB) KB from $caseFolderPath"
 
     Copy-Item -Path $caseFolderPath -Destination "$Destination\$CustomerAccount" -Force -Recurse -Verbose:$VerbosePreference -Debug:$DebugPreference
 }

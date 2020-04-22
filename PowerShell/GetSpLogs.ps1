@@ -6,6 +6,7 @@ function Get-SpLogs() {
     param (
         [string[]] $Path = @(),
         [string] $TaskId,
+        [switch] $IncludeMemoryUsageLog,
         [parameter(ValueFromPipeline)]
         [string[]] $InputObject
     )
@@ -13,6 +14,9 @@ function Get-SpLogs() {
         [string]$pattern = "(\[SPG\.\w)|(^@@)"
         if (![string]::IsNullOrEmpty($TaskId)) {
             $pattern = "(\[SPG\.\w\])|(^@@)|(:$TaskId\])"
+        }
+        if ($IncludeMemoryUsageLog.IsPresent) {
+            $pattern = "$pattern|(\`$ OS:)|(\`$ WS:)"
         }
     }
     process {

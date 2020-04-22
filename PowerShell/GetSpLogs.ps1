@@ -17,12 +17,10 @@ function Get-SpLogs() {
     }
     process {
         if ($null -eq $InputObject) {
-            $selectRes = Select-String -Path $Path -Pattern $pattern
+            Select-String -Path $Path -Pattern $pattern | Select-Object -ExpandProperty Line
         }
         else {
-            $selectRes = Select-String -Pattern $pattern -InputObject $InputObject
+            Select-String -Pattern $pattern -InputObject $InputObject | Select-Object -ExpandProperty Line
         }
-
-        $selectRes | Select-Object -ExpandProperty Line
     }
 }

@@ -22,5 +22,7 @@ function Copy-CustomerLogs() {
 
     Write-Host "Copying $($(Get-ChildItem $caseFolderPath -Recurse | Measure-Object Length -Sum).Sum / 1KB) KB from $caseFolderPath"
 
-    Copy-Item -Path $caseFolderPath -Destination "$Destination\$CustomerAccount" -Force -Recurse -Verbose:$VerbosePreference -Debug:$DebugPreference
+    New-Item "$Destination\$CustomerAccount\$CaseNumber\" -ItemType Directory -Force
+
+    Copy-Item -Path $caseFolderPath\* -Destination "$Destination\$CustomerAccount\$CaseNumber" -Force -Recurse -Verbose:$VerbosePreference -Debug:$DebugPreference
 }

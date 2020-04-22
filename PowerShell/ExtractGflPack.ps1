@@ -23,7 +23,7 @@ function Extract-GflPack() {
 
     Write-Verbose "Starting to extract gflpack $Path to $Destination"
 
-    & $GfinFileViewerPath $Path $Destination -unpack | Write-Verbose
+    $elapsed = Measure-Command { & $GfinFileViewerPath $Path $Destination -unpack | Write-Verbose }
 
     $extractResult = Get-Content "$Destination\GFINFileViewer Return Code.txt" -Encoding Unicode
 
@@ -31,5 +31,5 @@ function Extract-GflPack() {
         throw $extractResult
     }
 
-    Write-Verbose "Extracting of gflpack is finished"
+    Write-Verbose "Extracting of gflpack is finished. Elapsed time: $($elapsed.TotalSeconds) sec"
 }

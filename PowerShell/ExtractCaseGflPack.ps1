@@ -17,12 +17,14 @@ function Extract-CaseGflPack() {
 
         [string] $Destination = (Get-Location).Path,
 
+        [int] $Skip = 0,
+
         [string] $CustomerIndexPath = $CustomerIndexDefaultPath
     )
 
     $destinationFullPath = [System.IO.Path]::GetFullPath($Destination)
 
-    foreach ($gflPath in (Get-CaseGflPack $CustomerAccount $CaseNumber $CustomerIndexPath)) {
+    foreach ($gflPath in (Get-CaseGflPack $CustomerAccount $CaseNumber $CustomerIndexPath | select -Skip $Skip)) {
         Extract-GflPack $gflPath $destinationFullPath\$CustomerAccount\$CaseNumber\$([System.IO.Path]::GetFileNameWithoutExtension($gflPath.Name))
     }
 }

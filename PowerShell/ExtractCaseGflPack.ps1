@@ -14,8 +14,7 @@ function Extract-CaseGflPack() {
         [Parameter(Mandatory)]
         [string] $CaseNumber,
 
-        [Parameter(Mandatory)]
-        [string] $Destination,
+        [string] $Destination = ".\",
 
         [string] $CustomerIndexPath = $CustomerIndexDefaultPath
     )
@@ -23,8 +22,9 @@ function Extract-CaseGflPack() {
     $caseFolderPath = Get-CustomerLogsFolder $CustomerAccount $CaseNumber $CustomerIndexPath
 
     $gflPaths = Get-ChildItem $caseFolderPath\*.gfl -Verbose:$VerbosePreference -Debug:$DebugPreference
+    $destinationFullPath = [System.IO.Path]::GetFullPath($Destination)
 
     foreach ($gflPath in $gflPaths) {
-        Extract-GflPack $gflPath $Destination\$CustomerAccount\$CaseNumber\$([System.IO.Path]::GetFileNameWithoutExtension($gflPath.Name))
+        Extract-GflPack $gflPath $destinationFullPath\$CustomerAccount\$CaseNumber\$([System.IO.Path]::GetFileNameWithoutExtension($gflPath.Name))
     }
 }

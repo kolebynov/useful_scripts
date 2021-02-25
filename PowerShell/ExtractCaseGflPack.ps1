@@ -14,7 +14,7 @@ function Extract-CaseGflPack() {
         [Parameter(Mandatory)]
         [string] $CaseNumber,
 
-        [string] $Destination = ".\",
+        [string] $Destination = (Get-Location).Path,
 
         [string] $CustomerIndexPath = $CustomerIndexDefaultPath
     )

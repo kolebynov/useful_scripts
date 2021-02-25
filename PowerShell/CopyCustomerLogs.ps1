@@ -13,7 +13,7 @@ function Copy-CustomerLogs() {
         [Parameter(Mandatory)]
         [string] $CaseNumber,
 
-        [string] $Destination = ".",
+        [string] $Destination = (Get-Location).Path,
 
         [string] $CustomerIndexPath = $CustomerIndexDefaultPath
     )

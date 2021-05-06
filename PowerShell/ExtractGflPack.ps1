@@ -17,6 +17,8 @@ function Extract-GflPack() {
 
     $startTime = [datetime]::Now
 
+    $Destination = [System.IO.Path]::GetFullPath($Destination)
+
     if (!(Test-Path $Path)) {
         throw "Gflpack file $Path does not exist"
     }

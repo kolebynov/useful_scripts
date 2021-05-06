@@ -6,7 +6,8 @@ function Run-It {
 	    [switch] $OverwriteBaselines,
 	    [string[]] $Tests = @(),
         [string[]] $NotMatch = @(),
-        [string] $ConnectorName = $null
+        [string] $ConnectorName = $null,
+        [string] $StubUri = "http://localhost:90"
     )
 
     function Get-TargetFramework {
@@ -62,7 +63,7 @@ function Run-It {
     Copy-Item "$itProjectFolderPath\TestsSettings.json" "$itProjectFolderPath\TestsSettingsBak.json" -Force
     $testSettingsContent = gc $itProjectFolderPath\TestsSettings.json
     $testSettings = $testSettingsContent | ConvertFrom-Json
-    $testSettings.iapiStub.uri = "http://localhost:90"
+    $testSettings.iapiStub.uri = $StubUri
     $testSettings.connector.executablePath = "..\..\..\..\.$projectFolderPath\bin\Release\$projectFramework\publish\$ConnectorName.exe"
     $testSettings.connector.executionTimeout = "00:05:00"
     $testSettings.testDataStorage.storeMissingBaselines = $StoreMissingBaselines.IsPresent
